@@ -1,0 +1,277 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Citações de Filmes</title>
+        <link href="https://fonts.googleapis.com/css2?family=Metamorphous&display=swap" rel="stylesheet">
+    </head>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+h1 {
+    font-family: 'Metamorphous', cursive;
+    font-size: 2em;
+    color: #ffce54;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#quote {
+    font-family: Calibri, cursive;
+    background-color: #1e1e1e;
+    border: 2px solid #333;
+    border-radius: 12px;
+    padding: 25px;
+    max-width: 700px;
+    font-size: 1.4rem;
+    font-style: italic;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+    margin-bottom: 30px;
+    color: #ffce54;
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 700px;
+    margin-bottom: 25px;
+}
+
+.options button {
+    background-color: #2c2c2c;
+    color: #e0e0e0;
+    border: 1px solid #444;
+    padding: 14px 22px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    min-width: 180px;
+}
+
+.options button:hover {
+    background-color: #3a3a3a;
+    transform: scale(1.05);
+}
+
+.options button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#result {
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    min-height: 1.5em;
+    text-align: center;
+}
+
+#nextBtn {
+    background-color: #ffce54;
+    color: #1f1f1f;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: none;
+}
+
+#nextBtn:hover {
+    background-color: #e0b847;
+    transform: scale(1.05);
+}
+    </style>
+    <body>
+    <h1>Jogo de Citações de Filmes</h1>
+
+    <div id="quote">"Com grandes poderes vem grandes responsabilidades"</div>
+    
+    <div class="options"></div>
+
+    <div id="result"></div>
+
+    <button id="nextBtn">Próxima Citação</button>
+
+    <script src="script.js"></script>
+</body>
+    <script>
+      let answered = false;
+      const questions = [
+  {
+    quote: "Com grandes poderes vem grandes responsabilidades",
+    options: ["Homem Aranha", "Homem de Ferro", "Homem de Aço", "Homem Aranha: Longe de Casa"],
+    answer: "Homem Aranha",
+    explanation: "Essa frase é dita pelo Tio Ben e se tornou um lema central para o personagem Peter Parker."
+  },
+  {
+    quote: "Que a Força esteja com você.",
+    options: ["Harry Potter", "Matrix", "O Senhor dos Anéis", "Star Wars"],
+    answer: "Star Wars",
+    explanation: "Uma das frases mais icônicas de Star Wars, usada para desejar sorte e força espiritual."
+  },
+  {
+    quote: "Continue a nadar.",
+    options: ["Procurando Nemo", "O Espanta Tubarões", "Procurando Dory", "De Volta ao Fundo do Mar"],
+    answer: "Procurando Nemo",
+    explanation: "Dory repete essa frase como um mantra de otimismo ao longo do filme."
+  },
+  {
+    quote: "Ou você morre herói, ou vive o suficiente para se tornar vilão",
+    options: ["Logan", "Batman: O cavaleiro das trevas", "Capitão América: Guerra Civil", "Vingadores: Ultimato"],
+    answer: "Batman: O cavaleiro das trevas",
+    explanation: "Frase dita por Harvey Dent que resume a linha tênue entre o heroísmo e a corrupção."
+  },
+  {
+    quote: "Nós vamos sorrir. Sorriam.",
+    options: ["A Família do Futuro", "Ainda Estou Aqui", "As Aventuras de Paddington", "Procurando Dory"],
+    answer: "Ainda Estou Aqui",
+    explanation: "Uma frase emocionante dita em um momento delicado de despedida no filme."
+  },
+  {
+    quote: "Você está tão linda quanto o dia que te perdi.",
+    options: ["Crepúsculo", "Thor: Amor e Trovão", "Como Treinar seu Dragão", "Bela e a Fera"],
+    answer: "Como Treinar seu Dragão",
+    explanation: "Frase de Soluço ao rever alguém especial, cheia de emoção e saudade."
+  },
+  {
+    quote: "Por causa do ódio dos outros, o nosso amor foi destruído.",
+    options: ["Gnomeu e Julieta", "Sherek para Sempre", "Shakespeare Apaixonado", "Através da Minha Janela"],
+    answer: "Gnomeu e Julieta",
+    explanation: "Inspirado em Romeu e Julieta, fala sobre como o preconceito pode acabar com o amor."
+  },
+  {
+    quote: "Hasta la vista, baby",
+    options: ["Alerta Vermelho", "Bad Boys 2", "A Hora do Rush", "Exterminador do Futuro 2"],
+    answer: "Exterminador do Futuro 2",
+    explanation: "Frase clássica de Arnold Schwarzenegger como o T-800, virou marca registrada do filme."
+  },
+  {
+    quote: "O mundo não se divide em pessoas boas e más. Todos temos luz e trevas dentro de nós. O que importa é o lado qual decidimos agir. Isso é o que realmente somos",
+    options: ["O Aprendiz de Feiticeiro", "Animais Fantásticos e Onde Habitam", "Harry Potter: Ordem da Fênix", "Oz: Mágico e Poderoso"],
+    answer: "Harry Potter: Ordem da Fênix",
+    explanation: "Sirius Black diz essa frase para ensinar que as escolhas definem quem somos, não nossa origem."
+  },
+  {
+    quote: "CRUEL é bom",
+    options: ["Divergente", "Maze Runner", "Jogos Vorazes", "Distrito 9"],
+    answer: "Maze Runner",
+    explanation: "Frase usada pela organização CRUEL para justificar seus testes em adolescentes."
+  },
+  {
+    quote: "Quando precisam de mim mas não me querem, então eu fico, quando não precisam de mim, mas me querem, então eu vou",
+    options: ["O Mágico de Oz", "As Crônicas de Nárnia", "A Fantástica Fábrica de Chocolate", "Nanny McPhee"],
+    answer: "Nanny McPhee",
+    explanation: "Frase dita por Nanny McPhee explicando seu papel como cuidadora mágica."
+  },
+  {
+    quote: "Temos que dançar para mostrar a Deus que estamos gratos por estar vivos",
+    options: ["Jojo Rabbit", "Soul", "Viva - A Vida É Uma Festa", "À Espera de um Milagre"],
+    answer: "Jojo Rabbit",
+    explanation: "Momento emocionante do filme que valoriza a alegria mesmo em tempos sombrios."
+  },
+  {
+    quote: "Ainda quero estar aqui com você. Eu vou sempre, sempre querer estar aqui com você",
+    options: ["Divertida Mente 2", "Tudo em todo lugar ao mesmo tempo", "À Procura da Felicidade", "O Lado Bom da Vida"],
+    answer: "Tudo em todo lugar ao mesmo tempo",
+    explanation: "Expressa o amor incondicional em todas as realidades possíveis do multiverso."
+  },
+  {
+    quote: "Esperança é a única coisa mais forte que o medo. Um pouco de esperança e eficaz, muita esperança é perigoso. Faíscas são boas enquanto são contidas",
+    options: ["Jogos Vorazes: Cantiga dos pássaros e das serpentes", "O Grande Ditador", "Jogos Vorazes", "O Dia Que Durou 21 Anos"],
+    answer: "Jogos Vorazes",
+    explanation: "Presidente Snow explica como o controle da esperança é uma arma política poderosa."
+  }
+];
+let currentQuestion = 0;
+
+const quoteEl = document.getElementById("quote");
+const optionsEl = document.querySelector(".options");
+const resultEl = document.getElementById("result");
+const nextBtn = document.getElementById("nextBtn");
+
+  function showQuestion() {
+  answered = false;
+  const question = questions[currentQuestion];
+  resultEl.classList.add("nova");
+
+  quoteEl.textContent = question.quote;
+  optionsEl.innerHTML = "";
+  resultEl.textContent = "";
+  nextBtn.style.display = "none";
+
+  question.options.forEach(option => {
+    const button = document.createElement("button");
+    button.textContent = option;
+    button.onclick = () => checkAnswer(option);
+    optionsEl.appendChild(button);
+  });
+}
+
+
+function checkAnswer(selected) {
+  if (answered) return;
+  answered = true;
+
+  const question = questions[currentQuestion];
+  if (selected === question.answer) {
+    resultEl.textContent = "✅ Você acertou!";
+    resultEl.style.color = "green";
+
+    if (question.explanation) {
+      const explanationEl = document.createElement("div");
+      explanationEl.style.marginTop = "10px";
+      explanationEl.style.fontSize = "0.95rem";
+      explanationEl.style.color = "#cccccc";
+      explanationEl.textContent = `💡 ${question.explanation}`;
+      resultEl.appendChild(explanationEl);
+    }
+
+  } else {
+    resultEl.textContent = `❌ Errou! A resposta certa era: ${question.answer}`;
+    resultEl.style.color = "red";
+  }
+
+  const buttons = document.querySelectorAll(".options button");
+  buttons.forEach(btn => btn.disabled = true);
+
+  nextBtn.style.display = "inline-block";
+}
+nextBtn.addEventListener("click", () => {
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    quoteEl.classList.add("nova-fonte");
+    quoteEl.textContent = "🎉 Fim do jogo!";
+    optionsEl.innerHTML = "";
+    resultEl.textContent = "Obrigado por jogar!";
+    nextBtn.style.display = "none";
+  }
+});
+
+showQuestion();
+    </script>
+</html>
